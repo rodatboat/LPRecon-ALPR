@@ -1,6 +1,7 @@
 import pyimgur
+import os
 
-CLIENT_ID = ""
+CLIENT_ID = os.environ['CLIENT_ID']
 PATH = "./license_plates/4.jpg"
 
 im = pyimgur.Imgur(CLIENT_ID)
