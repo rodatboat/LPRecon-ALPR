@@ -13,4 +13,4 @@ collection = cluster['user-data']
 users = collection['customers']
 
 for user in users.find({"license":f"{license_number}"}):
-    print(f"{user['name']}\t{user['license']}")
+    print(f"{user['name']} {user['license']}")
