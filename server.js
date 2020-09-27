@@ -41,7 +41,7 @@ app.get('/api/getCustomer/:LP', (req, res) => {
 
         if (output) {
 
-            console.log(`Got customer ${output}`)
+            console.log(`Got customer ${output}`);
             res.json({
                 "name": `${output[0]}`,
                 "license": `${output[1].match('[A-Z0-9]{3,6}')[0]}`
