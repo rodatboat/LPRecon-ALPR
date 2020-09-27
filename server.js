@@ -32,7 +32,7 @@ app.get('/api/getLP/:imgID', (req, res) => {
 app.get('/api/getCustomer/:LP', (req, res) => {
     var LP = req.params.LP;
     
-    exec(`python fetch.py "${LP}"`, (err, stdout, stderr) => {
+    exec(`python3 fetch.py ${LP}`, (err, stdout, stderr) => {
         try {
             var output = stdout.split('\s');
             console.log(output);
