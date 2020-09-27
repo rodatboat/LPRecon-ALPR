@@ -13,6 +13,8 @@ app.get('/api/getLP/:imgID', (req, res) => {
 
     exec(`alpr ${image}.jpg`, (err, stdout, stderr) => {
         var output = stdout.split('\n')[1].match('[A-Z0-9]{3,6}')[0];
+        
+        exec(`rm ${image}.jpg`);
         res.json({"license_plate":`${output}`});
     });
 
