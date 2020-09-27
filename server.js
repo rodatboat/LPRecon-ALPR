@@ -30,19 +30,22 @@ app.get('/api/getLP/:imgID', (req, res) => {
 
 app.get('/api/getCustomer/:LP', (req, res) => {
     var LP = req.params.LP;
+    
+    exec(`python fetch.py ${LP}`, (err, stdout, stderr) => {
+        try {
+            var output = stdout.split('\t');
+            console.log(output);
+        } catch (e) {
+            res.json({ "user": "NOT FOUND." });
+        };
 
-    try {
-        exec(`python fetch.py ${LP}`, (err, stdout, stderr)=>{
-	var output = stdout.split('\t');
-});
-    } catch (e) {
-        res.json({ "ERR": "NOT FOUND." });
-    };
-
-    if (output) {
-        res.json({"name":`${output[0]}`,
-"license":`${output[1]}`});
-    };
+        if (output) {
+            res.json({
+                "name": `${output[0]}`,
+                "license": `${output[1].split('\r')[0]}`
+            });
+        };
+    });
 
     //res.json(200);
 });
