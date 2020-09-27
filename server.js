@@ -32,7 +32,7 @@ app.get('/api/getCustomer/:LP', (req, res) => {
     var LP = req.params.LP;
 
     try {
-        var output = exec(`python fetch.py ${LP}`);
+        var output = exec(`python fetch.py "${LP.toUpperCase()}"`);
     } catch (e) {
         res.json({ "ERR": "NOT FOUND." });
     };
