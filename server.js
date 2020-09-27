@@ -35,6 +35,7 @@ app.get('/api/getCustomer/:LP', (req, res) => {
     exec(`python fetch.py ${LP}`, (err, stdout, stderr) => {
         try {
             var output = stdout.split('\s');
+            console.log(output);
         } catch (e) {
             res.json({ "user": "NOT FOUND." });
         };
