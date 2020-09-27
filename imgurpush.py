@@ -1,4 +1,5 @@
 import pyimgur
+
 import requests
 import os
 import json
@@ -7,6 +8,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 license_plate_number = ""
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+CLIENT_ID = os.environ['CLIENT_ID']
+PATH = "./license_plates/fake.jpg"
+
 
 CLIENT_ID = os.getenv("TOKEN")
 # PATH = "./license_plates/4.jpg"

@@ -12,11 +12,44 @@ app.get('/api/getLP/:imgID', (req, res) => {
     exec(`wget https://i.imgur.com/${image}.jpg`);
 
     exec(`alpr ${image}.jpg`, (err, stdout, stderr) => {
-        var output = stdout.split('\n')[1].match('[A-Z0-9]{3,6}')[0];
-        res.json({"license_plate":`${output}`});
+        try {
+            var output = stdout.split('\n')[1].match('[A-Z0-9]{3,6}')[0];
+        } catch (e) {
+            exec(`rm ${image}.jpg`);
+            res.json({ "license_plate": "NO PLATE DETECTED" });
+        };
+
+        if (output) {
+            console.log(`Got license plate ${output}`)
+            exec(`rm ${image}.jpg`);
+            res.json({ "license_plate": `${output}` });
+        };
     });
 
-    res.json(200);
+    //res.json(200);
+});
+
+app.get('/api/getCustomer/:LP', (req, res) => {
+    var LP = req.params.LP;
+    
+    exec(`python3 fetch.py ${LP}`, (err, stdout, stderr) => {
+        try {
+            var output = stdout.split('\s');
+
+        } catch (e) {
+            res.json({ "user": "NOT FOUND." });
+        };
+
+        if (output) {
+
+            console.log(`Got customer ${output}`);
+            res.json({
+                "name": `${output[0]}`
+            });
+        };
+    });
+
+    //res.json(200);
 });
 
 app.listen(port, () => console.log("App started..."));
