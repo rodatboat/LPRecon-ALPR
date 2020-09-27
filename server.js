@@ -20,6 +20,7 @@ app.get('/api/getLP/:imgID', (req, res) => {
         };
 
         if (output) {
+            console.log(`Got license plate ${output}`)
             exec(`rm ${image}.jpg`);
             res.json({ "license_plate": `${output}` });
         };
@@ -34,15 +35,16 @@ app.get('/api/getCustomer/:LP', (req, res) => {
     exec(`python fetch.py ${LP}`, (err, stdout, stderr) => {
         try {
             var output = stdout.split('\t');
-            console.log(output);
         } catch (e) {
             res.json({ "user": "NOT FOUND." });
         };
 
         if (output) {
+
+            console.log(`Got customer ${output}`)
             res.json({
                 "name": `${output[0]}`,
-                "license": `${output[1].split('\r')[0]}`
+                "license": `${output[1].match('[A-Z0-9]{3,6}')[0]}`
             });
         };
     });
