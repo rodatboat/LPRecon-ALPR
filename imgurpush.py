@@ -1,9 +1,12 @@
 import pyimgur
 import requests
 import os
+import json
+import easygui
 from dotenv import load_dotenv
 load_dotenv()
 
+license_plate_number = ""
 
 CLIENT_ID = os.getenv("TOKEN")
 # PATH = "./license_plates/4.jpg"
@@ -27,3 +30,6 @@ def sendToServer(id):
     url = f'http://34.75.252.241:3000/api/getLP/{id}'
     r = requests.get(url)
     print(r.text)
+    
+    license_plate_number = json.loads(r.text)['license_plate']
+    easygui.msgbox(f'License Plate found: {license_plate_number}', title="License Alert")

@@ -9,8 +9,34 @@ import os
 import pathlib
 import tkinter as tk
 import tkinter.font as font
+from PIL import Image, ImageTk
+from imgurpush import license_plate_number as license_plate_number
 
+license_image = None
 filename = ""
+image_path = None
+
+
+       
+# window = tk.ThemedTk() 
+# window.get_themes()
+# window.set_theme("plastik")
+window = Tk()
+def center_window(w=500, h=400):
+    global window
+    # get screen width and height
+    ws = window.winfo_screenwidth()
+    hs = window.winfo_screenheight()
+    # calculate position x, y
+    x = (ws/2) - (w/2)    
+    y = (hs/2) - (h/2)
+    window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+
+window['bg']='black'
+window.title('AutoLicense')
+center_window(500, 400)
+
 def browseFiles(): 
     global filename
     filename = filedialog.askopenfilename(initialdir = "/", 
@@ -22,7 +48,7 @@ def browseFiles():
                                                        ("all files", 
                                                         "*.*"))) 
 
-    file_location.configure(text="File Opened: "+ filename )
+    file_location.configure(text="File Opened: "+ os.path.basename(filename) )
     path = filename
 
 def copyToProject(path):
@@ -30,23 +56,39 @@ def copyToProject(path):
     # print('END PATH: {}'.format('./' + os.path.join(os.path.basename(path), '')))
     shutil.copy(path, 'plate_copies')
     
-    return './' + os.path.basename(path)
+    return os.path.basename(path)
 
 def sendPlate(filename):
+    global image_path
+    global license_plate_number
     copyToProject(filename)
-    imgurpush.pushImage(copyToProject(filename))
-
-
+    path = copyToProject(filename)
+    image_path = path
     
-       
-# window = tk.ThemedTk() 
-# window.get_themes()
-# window.set_theme("plastik")
+    imgurpush.pushImage(path)
+    license_plate_number_label.config(text=license_plate_number)
+    
+    
 
-window = Tk()
-window['bg']='black'
-window.title('AutoLicense')
-window.geometry("500x400") 
+def refresh(self):
+    self.destroy()
+    self.__init__()
+
+
+# def viewImage():
+#     global license_image
+    
+#     license_image = ImageTk.PhotoImage((Image.open(f'.\plate_copies\{image_path}')))
+#     picture_preview.configure(image=license_image)
+#     picture_preview.image = license_image
+
+
+
+image = Image.open('background.png')
+
+photo_image = ImageTk.PhotoImage(image)
+plus_image = ImageTk.PhotoImage(Image.open('plus.png'))
+
 
 window.columnconfigure(0, weight=1)   # Set weight to row and 
 window.rowconfigure(0, weight=1)
@@ -57,47 +99,52 @@ window.rowconfigure(0, weight=1)
 # T1.tag_add("center", "1.0", "end") 
 # T1.pack()
 
-container = Frame(window, bg='black')   # bg color to show extent
-container.grid(row=0, column=0)
+# container = Frame(window, bg='black')   # bg color to show extent
+# container.pack()
 
 myFont = font.Font(size=30)
 
-
-
+background_label = Label(window, image=photo_image)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
 #File Explorer
-file_location = Label(container,  
-                      text = "File Explorer using Tkinter",  
+file_location = Label(window,  
+                      text = "Look up license picture!",  
                       fg = "blue",
-                      anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont', padx=10, pady=10) 
+                      anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont', padx=10, pady=20) 
    
        
-button_explore = Button(container,  
+button_explore = Button(window,  
                         text = "Browse Files", 
                         command= browseFiles,
-                        anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont')  
+                        anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont', image=plus_image)  
    
-button_exit = Button(container,  
-                     text = "Exit", 
-                     command = exit,
-                     anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont')  
 
-button_sendPlate = Button(container,  
+button_sendPlate = Button(window,  
                         text = "Send", 
                         command=lambda :sendPlate(filename),
                         anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont')  
+
+
+license_plate_number_label = Label(window,
+                        text="",
+                        foreground='white',
+                        bg='black',
+                        font='myFont'
+                        )
+
    
+
+
+
+file_location.place(x=120, y=135)
+
+   
+button_explore.place(x=320, y=144)
    
 
 
+button_sendPlate.place(x=258, y=210)
 
-file_location.grid(column = 0, row = 0)
-
-   
-button_explore.grid(column = 0, row = 1, padx=10, pady=10) 
-   
-button_exit.grid(column = 0,row = 2, padx=10, pady=10) 
-
-button_sendPlate.grid(column = 0,row = 3, padx=10, pady=10)
 
    
 window.mainloop() 
