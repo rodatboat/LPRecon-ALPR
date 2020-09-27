@@ -116,7 +116,7 @@ file_location = Label(window,
 button_explore = Button(window,  
                         text = "Browse Files", 
                         command= browseFiles,
-                        anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont', image=plus_image)  
+                        anchor = CENTER, highlightbackground = "white", bg='black', foreground='white', font='myFont')  
    
 
 button_sendPlate = Button(window,  

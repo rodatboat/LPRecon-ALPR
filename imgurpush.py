@@ -8,7 +8,7 @@ load_dotenv()
 
 license_plate_number = ""
 
-CLIENT_ID = os.getenv("TOKEN")
+CLIENT_ID = os.getenv("CLIENT_ID")
 # PATH = "./license_plates/4.jpg"
 
 # im = pyimgur.Imgur(CLIENT_ID)
@@ -18,11 +18,11 @@ CLIENT_ID = os.getenv("TOKEN")
 
 
 def pushImage(image_Location):
-    print('pushing')
+    #print('pushing')
     path = "./plate_copies/{}".format(image_Location)
     im = pyimgur.Imgur(CLIENT_ID)
     uploaded_image = im.upload_image(path, title="LP Finder")
-    print(os.path.splitext(os.path.basename(uploaded_image.link))[0])
+    print(f"Image ID: {os.path.splitext(os.path.basename(uploaded_image.link))[0]}")
     sendToServer((os.path.splitext(os.path.basename(uploaded_image.link))[0]))
 
 
