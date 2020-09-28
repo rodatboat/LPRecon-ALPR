@@ -1,5 +1,5 @@
 # ShellHacks-Autonation-LPFinder
-Artificial Neural Network License Plate Recognition
+Artificial License Plate Recognition with Node.js webserver endpoints.
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
