@@ -11,9 +11,9 @@ app.get('/api/getLP/:imgID', (req, res) => {
 
     exec(`wget https://i.imgur.com/${image}.jpg`);
 
-    exec(`alpr -p us -j ${image}.jpg`, (err, stdout, stderr) => {
+    exec(`alpr -c us -j ${image}.jpg`, (err, stdout, stderr) => {
         try {
-            var output = stdout.results[0].plate;
+            var output = JSON.parse(stdout).results[0].plate;
         } catch (e) {
             exec(`rm ${image}.jpg`);
             res.json({ "license_plate": "NO PLATE DETECTED" });
