@@ -13,7 +13,6 @@ app.get('/api/getLP/:imgID', (req, res) => {
 
     exec(`alpr -c us -j ${image}.jpg`, (err, stdout, stderr) => {
         try {
-            console.log(stdout);
             var output = JSON.parse(stdout).results[0].plate;
         } catch (e) {
             exec(`rm ${image}.jpg`);
