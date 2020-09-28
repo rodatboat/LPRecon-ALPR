@@ -13,7 +13,7 @@ app.get('/api/getLP/:imgID', (req, res) => {
 
     exec(`alpr -p us -j ${image}.jpg`, (err, stdout, stderr) => {
         try {
-            var output = JSON. parse(stdout).results[0];
+            var output = stdout.results[0].plate;
         } catch (e) {
             exec(`rm ${image}.jpg`);
             res.json({ "license_plate": "NO PLATE DETECTED" });
