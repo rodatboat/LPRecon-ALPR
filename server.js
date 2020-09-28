@@ -11,7 +11,7 @@ app.get('/api/getLP/:imgID', (req, res) => {
 
     exec(`wget https://i.imgur.com/${image}.jpg`);
 
-    exec(`alpr ${image}.jpg`, (err, stdout, stderr) => {
+    exec(`alpr -p us -j ${image}.jpg`, (err, stdout, stderr) => {
         try {
             var output = stdout.split('\n')[1].match('[A-Z0-9]{3,6}')[0];
         } catch (e) {
